@@ -1,13 +1,10 @@
 # main.py
-from fastapi import FastAPI, Depends
-from db import get_connection
-from mysql.connector import MySQLConnection
-from enrutadores.usuarios import router as usuario_router
-from enrutadores.productos import router as producto_router
+from fastapi import FastAPI
+from enrutadores.documento import router as documento_router
+
 import uvicorn
 app = FastAPI()
-app.include_router(usuario_router)
-app.include_router(producto_router)
+app.include_router(documento_router)
 
 
 

@@ -4,7 +4,7 @@ from typing import List
 from datetime import datetime
 
 from esquemas.producto import CrearProducto, RespuestaProducto
-from servicios.producto import ServicioProducto
+from servicios.documento import ServicioProducto
 
 @pytest.fixture
 def mock_repositorio():

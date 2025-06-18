@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from esquemas.usuario import CrearUsuario, RespuestaUsuario
+from esquemas.parametros_datos import ParametrosDatos
 from servicios.usuario import ServicioUsuario
 from dependencias import obtener_servicio_usuario
 router = APIRouter(
