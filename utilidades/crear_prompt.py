@@ -1,4 +1,4 @@
-def generar_prompt(document_information: str, estructura_json: str, detalles_adicionales: str = "") -> str:
+def generar_prompt(document_information: str, estructura_json: str,explicacion_campos:str, detalles_adicionales: str = "") -> str:
     prompt = f"""
 ## INSTRUCCIONES PARA EL SISTEMA EXPERTO DE EXTRACCIÓN DE DATOS (ETL)
 
@@ -59,8 +59,11 @@ Eres un sistema especializado en procesar documentos de COMFENALCO ANTIOQUIA con
 - No corregir: Errores ortográficos del original
 
 ---
+### 4. Descripción de los Campos Requeridos (RN)
+A continuación, encontrarás una explicación detallada de cada campo. La información se presenta en formato de tuplas (RN, campo, tipo y posibles opciones si aplica). Cada tupla especifica qué información se espera en cada campo, su tipo de dato y, si es un campo con múltiples opciones, cuáles son las alternativas válidas.
+{explicacion_campos}
 
-### 4. Estructura de Salida Requerida
+### 5. Estructura de Salida Requerida
 
 El output debe ser un JSON válido con esta estructura exacta:
 
@@ -68,4 +71,5 @@ El output debe ser un JSON válido con esta estructura exacta:
 {estructura_json}
 ```
 """
+    print(prompt)
     return prompt.strip()

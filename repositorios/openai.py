@@ -59,15 +59,27 @@ class RepositorioOpenAI(IRepositorioIA):
             print(f"Error al llamar a OpenAI: {e}")
             return {}
 
+
     async def _convertir_archivo_a_base64(self, archivo: UploadFile) -> str:
         try:
             contenido = await archivo.read()
-            with Image.open(BytesIO(contenido)) as img:
-                buffered = BytesIO()
-                formato = "JPEG"
-                if img.format in ["PNG", "GIF"]:
-                    formato = img.format
-                img.save(buffered, format=formato, quality=80)
-                return base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+            # Check the content type to determine if it's an image or a PDF
+            if archivo.content_type.startswith("image/"):
+                # Process as image
+                with Image.open(BytesIO(contenido)) as img:
+                    buffered = BytesIO()
+                    formato = "JPEG"
+                    if img.format in ["PNG", "GIF"]:
+                        formato = img.format
+                    img.save(buffered, format=formato, quality=80)
+                    return base64.b64encode(buffered.getvalue()).decode("utf-8")
+            elif archivo.content_type == "application/pdf":
+                # Process as PDF
+                return base64.b64encode(contenido).decode("utf-8")
+            else:
+                raise ValueError(f"Tipo de archivo no soportado: {archivo.content_type}. Solo se aceptan imágenes y PDFs.")
+
         except Exception as e:
-            raise RuntimeError(f"Error al procesar imagen: {e}")
+            # Catch more specific exceptions if needed, e.g., for corrupted files
+            raise RuntimeError(f"Error al procesar archivo: {e}")
